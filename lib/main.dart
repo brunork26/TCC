@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/telas/menu_principal.dart';
+import 'package:tcc/telas/grade.dart';
+import 'package:tcc/telas/inicio.dart';
+import 'package:tcc/telas/reordenavel.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +18,13 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MenuPrincipal(),
+      initialRoute: MenuPrincipal.id,
+      routes: {
+        MenuPrincipal.id: (context) => MenuPrincipal(),
+        Grade.id: (context) => Grade(),
+        Inicio.id: (context) => Inicio(),
+        MyHomePage.id: (context) => MyHomePage(),
+      },
     );
   }
 }
