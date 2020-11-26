@@ -38,7 +38,10 @@ class TextHotspots extends WidgetBasico {
         border: Border.all(color: Colors.black),
       ),
       child: Center(
-        child: Text(texto),
+        child: Text(
+          texto,
+          style: TextStyle(fontSize: 88, fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }

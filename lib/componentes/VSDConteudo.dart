@@ -29,7 +29,7 @@ class VSDConteudo extends WidgetBasico {
   void constroiMatrizGrade() {
     for (int i = 0; i < 14; i++) {
       for (int j = 0; j < 21; j++) {
-        _lista.add(addPontoReferencia(i, j));
+        //_lista.add(addPontoReferencia(i, j));
       }
       //matriz.add(listaNova);
     }

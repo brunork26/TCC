@@ -42,7 +42,21 @@ class NavBar extends WidgetBasico {
                 selecionaVSD(i);
               },
               child: Container(
-                child: data.conteudo[i].mini,
+                child: Column(
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: data.conteudo[i].mini,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Text(
+                        data.conteudo[i].descricao ?? '',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

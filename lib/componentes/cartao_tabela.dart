@@ -34,14 +34,18 @@ class CartaoTabela extends WidgetBasico {
           mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(
+              flex: 2,
               child: imagem,
             ),
             Expanded(
+              flex: 1,
               child: Center(
-                child: Text(
-                  texto,
-                  style: TextStyle(
-                    fontSize: 24,
+                child: Container(
+                  child: Text(
+                    texto,
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
                   ),
                 ),
               ),

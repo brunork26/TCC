@@ -9,7 +9,7 @@ import 'text_hotspots.dart';
 class VSD extends WidgetBasico {
   final String imagem;
   final List<String> conteudoLista;
-  TextHotspots th;
+  Widget th;
   Widget contemLista;
   List<Widget> linha = [];
 
@@ -44,7 +44,8 @@ class VSD extends WidgetBasico {
     th = cria(descricao);
   }
 
-  TextHotspots cria(String descricao) {
+  Widget cria(String descricao) {
+    print('teste');
     return TextHotspots(
       // mudaTexto: (texto) {
       //   setState(() {

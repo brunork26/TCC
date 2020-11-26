@@ -8,8 +8,8 @@ class TabelaWidget extends WidgetBasico {
   final List<Widget> conteudoLista;
   List<ExpandedGridContent> _lista = [];
 
-  TabelaWidget({id, mini, this.imagem, this.conteudoLista})
-      : super(id: id, mini: Image.asset(imagem)) {
+  TabelaWidget({id, mini, descricao, this.imagem, this.conteudoLista})
+      : super(id: id, mini: Image.asset(imagem), descricao: descricao) {
     populaListaDeComponantes();
   }
 
@@ -32,7 +32,7 @@ class TabelaWidget extends WidgetBasico {
   Widget build(BuildContext context) {
     return ExpandedGrid(
       column: 10,
-      row: 10,
+      row: 8,
       children: _lista,
     );
   }

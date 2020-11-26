@@ -29,3 +29,6 @@ flutter:
   assets:
     - imagens/
     - assets/
+    - assets/cards/
+    - assets/cards/pessoas/
+    - assets/cards/pronomes/
