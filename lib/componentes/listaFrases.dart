@@ -11,30 +11,39 @@ class ListaFrases extends WidgetBasico {
   }) : super(id: id, mini: mini);
 
   Widget botaoLista(String frase) {
-    return ButtonTheme(
-      padding: EdgeInsets.all(15.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18.0),
-        side: BorderSide(color: Colors.black),
-      ),
-      child: FlatButton(
-        onPressed: () {
-          Const.kPlayTTS.speak(frase);
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              frase,
-              style: TextStyle(
-                fontSize: 22,
+    return Expanded(
+      child: ButtonTheme(
+        padding: EdgeInsets.all(15.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18.0),
+          side: BorderSide(color: Colors.black),
+        ),
+        child: FlatButton(
+          onPressed: () {
+            Const.kPlayTTS.speak(frase);
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Flexible(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    frase,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 28,
+                    ),
+                  ),
+                ),
               ),
-            ),
-            Icon(
-              Icons.play_circle_outline,
-              size: 28.0,
-            ),
-          ],
+              Icon(
+                Icons.play_circle_outline,
+                size: 28.0,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -44,7 +53,7 @@ class ListaFrases extends WidgetBasico {
     List<Widget> list = [];
     for (int i = 0; i < conteudo.length; i++) {
       list.add(botaoLista(conteudo[i]));
-      list.add(SizedBox(height: 10));
+      list.add(SizedBox(height: 5));
     }
     return list;
   }

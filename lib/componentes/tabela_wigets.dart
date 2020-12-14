@@ -1,15 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:tcc/data/estrutura_basica.dart';
 import 'widget_basico.dart';
 import 'package:tcc/constantes.dart' as Const;
 import 'package:expanded_grid/expanded_grid.dart';
 
-class TabelaWidget extends WidgetBasico {
+class TabelaWidget extends StatefulWidget {
+  final EstruturaBasica estruturaBasica;
   final String imagem;
   final List<Widget> conteudoLista;
+  final Key key;
+
+  TabelaWidget(
+      {this.estruturaBasica, this.imagem, this.conteudoLista, this.key});
+
+  TabelaWidgetState tabelaWidgetState;
+
+  @override
+  TabelaWidgetState createState() {
+    tabelaWidgetState = TabelaWidgetState(
+      estruturaBasica: estruturaBasica,
+      imagem: imagem,
+      conteudoLista: conteudoLista,
+      key: key,
+    );
+    return tabelaWidgetState;
+  }
+
+  static TabelaWidgetState of(BuildContext context) =>
+      context.findAncestorStateOfType<TabelaWidgetState>();
+}
+
+class TabelaWidgetState extends State<TabelaWidget> {
+  final String imagem;
+  final List<Widget> conteudoLista;
+  final Key key;
+  final EstruturaBasica estruturaBasica;
   List<ExpandedGridContent> _lista = [];
 
-  TabelaWidget({id, mini, descricao, this.imagem, this.conteudoLista})
-      : super(id: id, mini: Image.asset(imagem), descricao: descricao) {
+  TabelaWidgetState({
+    this.estruturaBasica,
+    this.imagem,
+    this.conteudoLista,
+    this.key,
+  }) {
     populaListaDeComponantes();
   }
 
@@ -37,62 +70,3 @@ class TabelaWidget extends WidgetBasico {
     );
   }
 }
-/*
-https://github.com/organic-nailer/expanded_grid
-<ExpandedGridContent>[
-        ExpandedGridContent(
-          rowIndex: 0,
-          columnIndex: 0,
-          rowSpan: 2,
-          columnSpan: 3,
-          child: VSD(
-            id: 0,
-            imagem: Const.imgs[0],
-            conteudoLista: null,
-          ),
-        ),
-        ExpandedGridContent(
-            rowIndex: 0,
-            columnIndex: 3,
-            rowSpan: 2,
-            child: Container(
-              color: Colors.green,
-            )),
-        ExpandedGridContent(
-            rowIndex: 2,
-            columnIndex: 0,
-            rowSpan: 2,
-            columnSpan: 2,
-            child: Container(
-              color: Colors.red,
-            )),
-        ExpandedGridContent(
-            rowIndex: 2,
-            columnIndex: 2,
-            columnSpan: 2,
-            child: Container(
-              color: Colors.yellow,
-            )),
-        ExpandedGridContent(
-            rowIndex: 3,
-            columnIndex: 2,
-            rowSpan: 2,
-            child: Container(
-              color: Colors.purple,
-            )),
-        ExpandedGridContent(
-            rowIndex: 3,
-            columnIndex: 3,
-            rowSpan: 2,
-            child: Container(
-              color: Colors.amber,
-            )),
-        ExpandedGridContent(
-            rowIndex: 4,
-            columnIndex: 0,
-            columnSpan: 2,
-            child: Container(
-              color: Colors.teal,
-            )),
-      ]
-*/

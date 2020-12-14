@@ -40,7 +40,7 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
               },
             ),
             BotaoMenu(
-              text: 'Tela para Pessoas com Síndrome de Down',
+              text: 'Tela para Crianças com Síndrome de Down',
               color: Colors.green,
               onPressed: () {
                 Navigator.pushNamed(context, TelaSDD.id);

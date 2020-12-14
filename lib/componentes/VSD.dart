@@ -1,59 +1,99 @@
 import 'package:flutter/material.dart';
-import '../constantes.dart';
-import 'widget_basico.dart';
+import 'package:tcc/data/estrutura_basica.dart';
+import 'package:tcc/modelo/ponto_referencia.dart';
 import 'listaFrases.dart';
 import 'package:tcc/constantes.dart' as Const;
 import 'VSDConteudo.dart';
 import 'text_hotspots.dart';
 
-class VSD extends WidgetBasico {
+class VSD extends StatefulWidget {
+  final EstruturaBasica estruturaBasica;
   final String imagem;
   final List<String> conteudoLista;
-  Widget th;
-  Widget contemLista;
-  List<Widget> linha = [];
+  final List<PontoReferencia> pontosReferencia;
+  String text = '';
+
+  final Key key;
+
+  final void Function(String, Key) hotspot;
 
   VSD({
-    id,
-    mini,
-    tipo,
-    indexLinha,
-    indexColuna,
-    tamanhoNaColuna,
-    tamanhoNaLinha,
-    descricao,
-    @required this.imagem,
-    @required this.conteudoLista,
-  }) : super(
-          id: id,
-          mini: Image.asset(imagem),
-          tipo: TiposWidget.VSD,
-          indexLinha: indexLinha,
-          indexColuna: indexColuna,
-          tamanhoNaColuna: tamanhoNaColuna,
-          tamanhoNaLinha: tamanhoNaLinha,
-          descricao: descricao,
-        ) {
+    this.estruturaBasica,
+    this.imagem,
+    this.conteudoLista,
+    this.key,
+    this.pontosReferencia,
+    this.hotspot,
+  });
+
+  VSDState vsdState;
+
+  @override
+  VSDState createState() {
+    vsdState = VSDState(
+      text: text,
+      estruturaBasica: estruturaBasica,
+      imagem: imagem,
+      conteudoLista: conteudoLista,
+      pontosReferencia: pontosReferencia,
+      hotspot: hotspot,
+      //textHotspots: textHotspots,
+    );
+    return vsdState;
+  }
+
+  TextHotspots hotspotsWidget() {
+    return vsdState.hotspotsWidget();
+  }
+
+  static VSDState of(BuildContext context) =>
+      context.findAncestorStateOfType<VSDState>();
+}
+
+class VSDState extends State<VSD> {
+  final String imagem;
+  final Key key;
+  final List<String> conteudoLista;
+  final EstruturaBasica estruturaBasica;
+  final List<PontoReferencia> pontosReferencia;
+  final void Function(String, Key) hotspot;
+  final TextHotspots textHotspots;
+  Widget _contemLista;
+  List<Widget> linha = [];
+  String text = '';
+
+  VSDState({
+    text,
+    this.estruturaBasica,
+    this.imagem,
+    this.conteudoLista,
+    this.key,
+    this.pontosReferencia,
+    this.hotspot,
+    this.textHotspots,
+  }) {
     if (conteudoLista == null) {
-      contemLista = Container(
+      _contemLista = Container(
         child: null,
       );
     } else {
-      contemLista = ListaFrases(conteudo: conteudoLista);
+      _contemLista = ListaFrases(conteudo: conteudoLista);
     }
-    th = cria(descricao);
+    //th = cria(estruturaBasica.descricao);
   }
 
-  Widget cria(String descricao) {
-    print('teste');
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  TextHotspots hotspotsWidget() {
     return TextHotspots(
-      // mudaTexto: (texto) {
-      //   setState(() {
-      //     print(texto);
-      //     textoCaixa = texto;
-      //   });
-      // },
-      texto: descricao,
+      key: Key('t2'),
+      mudaTexto: (texto) {
+        this.setState(() {});
+      },
+      texto: text,
     );
   }
 
@@ -66,13 +106,23 @@ class VSD extends WidgetBasico {
           margin: EdgeInsets.all(10),
           decoration: Const.kBordaCircular,
           child: VSDConteudo(
-            imagem: imagem,
+            key: key,
+            regioes: pontosReferencia,
+            onTap: (texto, key) {
+              this.setState(() {
+                text = texto;
+                hotspot(text, key);
+                print(text);
+              });
+            },
+            imagem: this.imagem,
           ),
         ),
       ),
-      contemLista
+      _contemLista
     ];
     return Row(
+      key: key,
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: linha,

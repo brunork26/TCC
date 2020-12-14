@@ -7,7 +7,6 @@ import '../data/nav_bar_data.dart';
 import 'VSD.dart';
 import 'cartao_tabela.dart';
 import 'nav_bar.dart';
-import 'widget_basico.dart';
 import '../data/estrutura_basica.dart';
 
 class Grid extends StatefulWidget {
@@ -94,11 +93,17 @@ class GridState extends State<Grid> {
     }
     print(imprime);
 
-    WidgetBasico novoWidget = defineWidget(v1, v2);
-
-    // TODO: informar que não pode ser adicionado
-    int distanciaLinhaMax = novoWidget.tamanhoNaLinha + v1;
-    int distanciaColunaMax = novoWidget.tamanhoNaColuna + v2;
+    dynamic novoWidget = defineWidget(v1, v2);
+    int distanciaLinhaMax;
+    int distanciaColunaMax;
+    if (widgetSelecionado == TiposWidget.CARD_TABELA) {
+      distanciaLinhaMax = novoWidget.tamanhoNaLinha + v1;
+      distanciaColunaMax = novoWidget.tamanhoNaColuna + v2;
+    } else {
+// TODO: informar que não pode ser adicionado
+      distanciaLinhaMax = novoWidget.estruturaBasica.tamanhoNaLinha + v1;
+      distanciaColunaMax = novoWidget.estruturaBasica.tamanhoNaColuna + v2;
+    }
 
     // Recusa por causa de overflow da tabela
     if (distanciaLinhaMax > tl || distanciaColunaMax > tc) {
@@ -118,12 +123,17 @@ class GridState extends State<Grid> {
       }
     }
 
-    print('Tamanho Linha: ${novoWidget.tamanhoNaLinha}');
-    print('Tamanho Coluna: ${novoWidget.tamanhoNaColuna}');
+    // print('Tamanho Linha: ${novoWidget.estruturaBasica.tamanhoNaLinha}');
+    // print('Tamanho Coluna: ${novoWidget.estruturaBasica.tamanhoNaColuna}');
+
     // adiciona widget na matriz
     for (int i = v1; i < distanciaLinhaMax; i++) {
       for (int j = v2; j < distanciaColunaMax; j++) {
-        matriz[i][j] = novoWidget.id;
+        if (widgetSelecionado == TiposWidget.CARD_TABELA) {
+          matriz[i][j] = novoWidget.id;
+        } else {
+          matriz[i][j] = novoWidget.estruturaBasica.id;
+        }
       }
     }
     imprime = 'Sai: \n';
@@ -138,7 +148,7 @@ class GridState extends State<Grid> {
     adicionandoElemento = false;
   }
 
-  WidgetBasico defineWidget(int v1, int v2) {
+  Widget defineWidget(int v1, int v2) {
     incremendaId++;
     print('id: $incremendaId');
     print('Linha: $v1');
@@ -147,30 +157,34 @@ class GridState extends State<Grid> {
       case TiposWidget.VSD:
         print('vsd');
         return VSD(
-          id: incremendaId,
+          estruturaBasica: EstruturaBasica(
+            id: incremendaId,
+            indexLinha: v1,
+            indexColuna: v2,
+            tamanhoNaColuna: tamNovoWidgeColuna,
+            tamanhoNaLinha: tamNovoWidgeLinha,
+          ),
           imagem: Const.kImgs[0],
           conteudoLista: null,
-          indexLinha: v1,
-          indexColuna: v2,
-          tamanhoNaColuna: tamNovoWidgeColuna,
-          tamanhoNaLinha: tamNovoWidgeLinha,
         );
       case TiposWidget.NAR_BAR:
         print('NavBar');
         return NavBar(
-          id: incremendaId,
           data: NavBarData(conteudo: []),
-          indexLinha: v1,
-          indexColuna: v2,
-          tamanhoNaColuna: tamNovoWidgeColuna,
-          tamanhoNaLinha: tamNovoWidgeLinha,
+          estruturaBasica: EstruturaBasica(
+            id: incremendaId,
+            indexLinha: v1,
+            indexColuna: v2,
+            tamanhoNaColuna: tamNovoWidgeColuna,
+            tamanhoNaLinha: tamNovoWidgeLinha,
+          ),
         );
       case TiposWidget.CARD_TABELA:
         print('Cardtabela');
         return CartaoTabela(
           id: incremendaId,
-          imagem: Image.asset(Const.kImgs[4]),
-          texto: 'teste',
+          imagem: Image.asset(Const.kImagemDefault),
+          texto: 'default',
           indexLinha: v1,
           indexColuna: v2,
           tamanhoNaColuna: tamNovoWidgeColuna,
@@ -186,14 +200,27 @@ class GridState extends State<Grid> {
     return null;
   }
 
-  ExpandedGridContent widgetNovo(WidgetBasico widgetBasico) {
-    return ExpandedGridContent(
-      rowIndex: widgetBasico.indexLinha,
-      columnIndex: widgetBasico.indexColuna,
-      rowSpan: widgetBasico.tamanhoNaLinha,
-      columnSpan: widgetBasico.tamanhoNaColuna,
-      child: widgetBasico,
-    );
+  ExpandedGridContent widgetNovo(dynamic widgetBasico) {
+    ExpandedGridContent egc;
+    if (widgetSelecionado == TiposWidget.CARD_TABELA) {
+      egc = ExpandedGridContent(
+        rowIndex: widgetBasico.indexLinha,
+        columnIndex: widgetBasico.indexColuna,
+        rowSpan: widgetBasico.tamanhoNaLinha,
+        columnSpan: widgetBasico.tamanhoNaColuna,
+        child: widgetBasico,
+      );
+    } else {
+      egc = ExpandedGridContent(
+        rowIndex: widgetBasico.estruturaBasica.indexLinha,
+        columnIndex: widgetBasico.estruturaBasica.indexColuna,
+        rowSpan: widgetBasico.estruturaBasica.tamanhoNaLinha,
+        columnSpan: widgetBasico.estruturaBasica.tamanhoNaColuna,
+        child: widgetBasico,
+      );
+    }
+
+    return egc;
   }
 
   ExpandedGridContent celulaPlaceHolder(int linha, int coluna) {

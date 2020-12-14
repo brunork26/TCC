@@ -2,36 +2,56 @@ import 'package:flutter/material.dart';
 import '../data/nav_bar_data.dart';
 import 'widget_basico.dart';
 import 'package:tcc/constantes.dart';
+import '../data/estrutura_basica.dart';
 
-class NavBar extends WidgetBasico {
+class NavBar extends StatefulWidget {
+  final EstruturaBasica estruturaBasica;
   final double width;
   final double height;
   final NavBarData data;
   final Function(int) selecionaVSD;
 
-  final List<Widget> widgets = [];
-
   NavBar(
-      {id,
-      mini,
-      tipo,
-      indexLinha,
-      indexColuna,
-      tamanhoNaColuna,
-      tamanhoNaLinha,
-      this.height,
+      {this.estruturaBasica,
       this.width,
-      @required this.data,
-      this.selecionaVSD})
-      : super(
-          id: id,
-          mini: mini,
-          tipo: TiposWidget.NAR_BAR,
-          indexLinha: indexLinha,
-          indexColuna: indexColuna,
-          tamanhoNaColuna: tamanhoNaColuna,
-          tamanhoNaLinha: tamanhoNaLinha,
-        ) {
+      this.height,
+      this.data,
+      this.selecionaVSD});
+
+  NavBarState navBarState;
+
+  @override
+  NavBarState createState() {
+    navBarState = NavBarState(
+      estruturaBasica: estruturaBasica,
+      data: data,
+      selecionaVSD: selecionaVSD,
+      width: width,
+      height: height,
+    );
+    return navBarState;
+  }
+
+  static NavBarState of(BuildContext context) =>
+      context.findAncestorStateOfType<NavBarState>();
+}
+
+class NavBarState extends State<NavBar> {
+  final double width;
+  final double height;
+  final NavBarData data;
+  final Function(int) selecionaVSD;
+  final EstruturaBasica estruturaBasica;
+
+  final List<Widget> widgets = [];
+  int selecionado;
+  NavBarState(
+      {this.estruturaBasica,
+      this.data,
+      this.selecionaVSD,
+      this.height,
+      this.width}) {
+    selecionado = 0;
     for (int i = 0; i < data.conteudo.length; i++) {
       widgets.add(
         Expanded(
@@ -40,8 +60,13 @@ class NavBar extends WidgetBasico {
             child: GestureDetector(
               onTap: () {
                 selecionaVSD(i);
+                selecionado = i;
               },
               child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  border: Border.all(),
+                ),
                 child: Column(
                   children: [
                     Expanded(

@@ -7,6 +7,7 @@ import 'widget_basico.dart';
 class TextHotspots extends WidgetBasico {
   //final Function onTap;
   String texto;
+  Key key;
   final Function(String) mudaTexto;
   TextHotspots({
     id,
@@ -17,6 +18,7 @@ class TextHotspots extends WidgetBasico {
     tamanhoNaLinha,
     this.texto,
     this.mudaTexto,
+    this.key,
     //this.onTap,
   }) : super(
           id: id,
@@ -31,6 +33,7 @@ class TextHotspots extends WidgetBasico {
   @override
   Widget build(BuildContext context) {
     return Container(
+      key: key,
       //height: 100.0,
       margin: EdgeInsets.all(10.0),
       decoration: BoxDecoration(

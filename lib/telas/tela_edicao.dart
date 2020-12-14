@@ -51,13 +51,13 @@ class _TelaEdicaoState extends State<TelaEdicao> {
               tamanhoNaLinha: 2,
               tamanhoNaColuna: 1),
         ),
-        PopupMenuItem(
-          child: Text("Add Lista_Frases"),
-          value: EstruturaBasica(
-              tipo: TiposWidget.LISTA_FRASES,
-              tamanhoNaLinha: 2,
-              tamanhoNaColuna: 10),
-        ),
+        // PopupMenuItem(
+        //   child: Text("Add Lista_Frases"),
+        //   value: EstruturaBasica(
+        //       tipo: TiposWidget.LISTA_FRASES,
+        //       tamanhoNaLinha: 2,
+        //       tamanhoNaColuna: 10),
+        // ),
       ],
       elevation: 8.0,
     )
@@ -86,16 +86,23 @@ class _TelaEdicaoState extends State<TelaEdicao> {
           ],
         ),
       ),
-      floatingActionButton: Container(
-        height: 100,
-        width: 100,
-        child: FloatingActionButton(
-          onPressed: () {
-            // Add your onPressed code here!
-            _showCustomMenu();
-          },
-          child: kEngrenagem,
-          backgroundColor: Colors.white,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Const.kFAB(context),
+            FloatingActionButton(
+              heroTag: 'Engrenagem',
+              onPressed: () {
+                // Add your onPressed code here!
+                _showCustomMenu();
+              },
+              child: kEngrenagem,
+              backgroundColor: Colors.white,
+            ),
+          ],
         ),
       ),
     );

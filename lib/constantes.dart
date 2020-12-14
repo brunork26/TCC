@@ -31,6 +31,8 @@ const List<String> kImgs = [
   './imagens/tomando.jpg',
 ];
 
+const String kImagemDefault = './assets/cards/pronomes/default.png';
+
 // Enum tipos widgets
 
 enum TiposWidget {
@@ -41,6 +43,7 @@ enum TiposWidget {
   POSICAO_GRID,
   PONTO_REFERENCIA,
   TEXT_HOTSPOTS,
+  CAIXA_WIDGETS,
 }
 
 // Componente do text to speach
@@ -62,3 +65,13 @@ const Icon kEngrenagem = Icon(
   size: 70,
   color: Colors.black,
 );
+
+FloatingActionButton kFAB(context) => FloatingActionButton(
+      heroTag: 'ConstFloatBack',
+      onPressed: () {
+        // Add your onPressed code here!
+        Navigator.pop(context);
+      },
+      child: Icon(Icons.keyboard_arrow_left),
+      backgroundColor: kAzulEscuro,
+    );

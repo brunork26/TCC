@@ -1,10 +1,11 @@
 import 'package:expanded_grid/expanded_grid.dart';
 import 'package:flutter/material.dart';
-import '../componentes/VSD.dart';
-import '../constantes.dart' as Const;
 import '../data/nav_bar_data.dart';
 import '../componentes/nav_bar.dart';
 import '../componentes/text_hotspots.dart';
+import 'package:tcc/componentes/VSD.dart';
+import 'package:tcc/data/estrutura_basica.dart';
+import 'package:tcc/constantes.dart' as Const;
 import '../dados.dart' as Dados;
 
 // TelaCriancasComDeficiencia
@@ -15,14 +16,30 @@ class TelaCCD extends StatefulWidget {
 }
 
 class _TelaCCDState extends State<TelaCCD> {
-  NavBarData navBarData = Dados.ccddata;
-
-  Widget conteudoVisivel;
+  NavBarData navBarData = Dados.ccddata; // Dados.ccddata;
   int idText = 0;
-  VSD teste;
+  Widget textHotspotVisicel;
   String textoCaixa;
+  Key keyText = Key('0');
+
+  @override
+  void initState() {
+    navBarData = Dados.ccddata;
+    idText = 0;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    textHotspotVisicel = TextHotspots(
+      key: Key('t1'),
+      mudaTexto: (texto) {
+        this.setState(() {
+          textoCaixa = texto;
+        });
+      },
+      texto: '',
+    );
     return Scaffold(
       body: SafeArea(
         child: ExpandedGrid(
@@ -30,21 +47,21 @@ class _TelaCCDState extends State<TelaCCD> {
           row: 10,
           children: [
             ExpandedGridContent(
-                rowIndex: 0,
-                columnIndex: 0,
-                rowSpan: 2,
-                columnSpan: 10,
-                child:
-                    //TextHotspots(
-                    // mudaTexto: (texto) {
-                    //   setState(() {
-                    //     print(texto);
-                    //     textoCaixa = texto;
-                    //   });
-                    // },
-                    //  texto: 'Teste',
-                    //),
-                    navBarData.conteudo[idText].th),
+              key: Key('expanded'),
+              rowIndex: 0,
+              columnIndex: 0,
+              rowSpan: 2,
+              columnSpan: 10,
+              child: TextHotspots(
+                key: keyText,
+                mudaTexto: (texto) {
+                  this.setState(() {
+                    textoCaixa = texto;
+                  });
+                },
+                texto: textoCaixa ?? navBarData.conteudo[idText].descricao,
+              ),
+            ),
             ExpandedGridContent(
               rowIndex: 8,
               columnIndex: 0,
@@ -57,10 +74,9 @@ class _TelaCCDState extends State<TelaCCD> {
                   Expanded(
                     child: NavBar(
                       selecionaVSD: (id) {
-                        setState(() {
-                          conteudoVisivel = navBarData.conteudo[id];
+                        this.setState(() {
                           idText = id;
-                          teste = conteudoVisivel;
+                          textoCaixa = navBarData.conteudo[idText].descricao;
                         });
                       },
                       data: navBarData,
@@ -74,11 +90,35 @@ class _TelaCCDState extends State<TelaCCD> {
               columnIndex: 1,
               rowSpan: 6,
               columnSpan: 8,
-              child: conteudoVisivel ?? navBarData.conteudo[0],
+              child: VSD(
+                key: navBarData.conteudo[idText].key,
+                imagem: navBarData.conteudo[idText].imagem,
+                conteudoLista: null,
+                hotspot: (texto, key) {
+                  print('=====');
+                  print(texto);
+                  setState(() {
+                    textoCaixa = texto;
+                    keyText = key;
+                  });
+                },
+                pontosReferencia: navBarData.conteudo[idText].pontosReferencia,
+                estruturaBasica: EstruturaBasica(
+                    //id: navBarData.conteudo[idText].id,
+                    //mini: navBarData.conteudo[idText].mini,
+                    // indexLinha: 2,
+                    // indexColuna: 2,
+                    // tamanhoNaColuna: 6,
+                    // tamanhoNaLinha: 6,
+                    //descricao: navBarData.conteudo[idText].descricao,
+                    ),
+              ),
             )
           ],
         ),
       ),
+      floatingActionButton: Const.kFAB(context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
     );
   }
 }
